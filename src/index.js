@@ -13,7 +13,7 @@ const toggleRow = () => {
   if (row) {
     if (row.style.display) {
       row.style.display = ''
-      randomizeColor()
+      randomizeColor(row)
     } else {
       row.style.display = 'none'
     }
