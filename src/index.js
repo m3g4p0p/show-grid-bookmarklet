@@ -1,72 +1,69 @@
-(function () {
-  const randomizeColor = row => {
-    const rnd = () => Math.random() * 255
-    const backgroundColor = `rgba(${rnd()}, ${rnd()}, ${rnd()}, .2)`
+const randomizeColor = row => {
+  const rnd = () => Math.random() * 255
+  const backgroundColor = `rgba(${rnd()}, ${rnd()}, ${rnd()}, .2)`
 
-    Array.from(row.children).forEach(col => {
-      col.firstElementChild.style.backgroundColor = backgroundColor
-    })
-  }
+  Array.from(row.children).forEach(col => {
+    col.firstElementChild.style.backgroundColor = backgroundColor
+  })
+}
 
-  const toggleRow = () => {
-    const row = document.querySelector('._debug-row')
+const toggleRow = () => {
+  const row = document.querySelector('._debug-row')
 
-    if (row) {
-      if (row.style.display) {
-        row.style.display = ''
-        randomizeColor()
-      } else {
-        row.style.display = 'none'
-      }
-
-      return true
+  if (row) {
+    if (row.style.display) {
+      row.style.display = ''
+      randomizeColor()
+    } else {
+      row.style.display = 'none'
     }
 
-    return false
+    return true
   }
 
-  const createMarker = () => {
-    const marker = document.createElement('div')
+  return false
+}
 
-    Object.assign(marker.style, {
-      height: '1px',
-      width: '100%',
-      backgroundColor: 'rgba(255, 0, 0, .2)',
-      transform: 'scale(1, 10000)'
-    })
+const createMarker = () => {
+  const marker = document.createElement('div')
 
-    return marker
-  }
+  Object.assign(marker.style, {
+    height: '1px',
+    width: '100%',
+    backgroundColor: 'rgba(255, 0, 0, .2)',
+    transform: 'scale(1, 10000)'
+  })
 
-  const createCol = () => {
-    const col = document.createElement('div')
-    const marker = createMarker()
+  return marker
+}
 
-    col.classList.add('wb-col-mq1-1')
-    col.append(marker)
+const createCol = () => {
+  const col = document.createElement('div')
+  const marker = createMarker()
 
-    return col
-  }
+  col.classList.add('wb-col-mq1-1')
+  col.append(marker)
 
-  const bindEvent = () => {
-    window.addEventListener('keydown', ({ key }) => {
-      if (key === 'Dead') {
-        toggleRow()
-      }
-    })
-  }
+  return col
+}
 
-  const createRow = () => {
-    const grid = document.querySelector('.wb-content-grid')
-    const row = document.createElement('div')
-    const cols = Array.from({ length: 12 }).map(createCol)
+const bindEvent = () => {
+  window.addEventListener('keydown', ({ key }) => {
+    if (key === 'Dead') {
+      toggleRow()
+    }
+  })
+}
 
-    row.classList.add('wb-content-grid__row', '_debug-row')
-    row.append(...cols)
-    grid.prepend(row)
-    bindEvent()
-  }
+const createRow = () => {
+  const grid = document.querySelector('.wb-content-grid')
+  const row = document.createElement('div')
+  const cols = Array.from({ length: 12 }).map(createCol)
 
-  toggleRow() || createRow()
-})()
+  row.classList.add('wb-content-grid__row', '_debug-row')
+  row.append(...cols)
+  grid.prepend(row)
+  bindEvent()
+}
 
+toggleRow() || createRow()
