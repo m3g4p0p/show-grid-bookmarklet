@@ -1,34 +1,31 @@
+const webpack = require('webpack')
 const path = require('path')
+const BookmarkletPlugin = require('./lib/bookmarklet-plugin')
 
 module.exports = {
   entry: {
-    bookmarklet: './src/index.js'
+    'show-grid': './src/index.js'
   },
 
   module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: path.resolve('./lib/bookmarklet-loader.js'),
-          options: {
-            filename: 'bookmarklet.txt'
-          }
-        }
-      },
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['babel-preset-env']
-          }
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['babel-preset-env']
         }
       }
-    ]
+    }]
   },
+
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin(),
+    new BookmarkletPlugin({
+      test: /\.js$/
+    })
+  ],
 
   output: {
     path: path.join(__dirname, 'dist'),
